@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Bitcoin Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .price {
+            font-size: 2em;
+            color: #333;
+        }
+        #chart-container {
+            width: 80%;
+            max-width: 800px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Live Bitcoin Price</h1>
+        <p class="price">${{ bitcoin_price }}</p>
+        <h2>Predicted Price for Next Hour</h2>
+        <p class="price">${{ next_hour_price }}</p>
+    </div>
+    <div id="chart-container">
+        <canvas id="bitcoinChart"></canvas>
+    </div>
+    <script>
+        const ctx = document.getElementById('bitcoinChart').getContext('2d');
+        const bitcoinChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ historical_data.labels|safe }},
+                datasets: [{
+                    label: 'Bitcoin Price',
+                    data: {{ historical_data.prices|safe }},
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Month'
+                        }
+                    },
+                    y: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Price (USD)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Function to update the chart with new data
+        function updateChart(newPrice) {
+            const currentDate = new Date();
+            const currentMonth = currentDate.toLocaleString('default', { month: 'short' });
+            bitcoinChart.data.labels.push(currentMonth);
+            bitcoinChart.data.datasets[0].data.push(newPrice);
+            bitcoinChart.update();
+        }
+
+        // Fetch the latest prediction and update the UI
+        function fetchLatestPrediction() {
+            fetch('/').then(response => response.json()).then(data => {
+                const newPrice = parseFloat(data.bitcoin_price.replace(/,/g, ''));
+                updateChart(newPrice);
+                document.querySelector('.price').innerText = `$${newPrice}`;
+                document.querySelector('.container h2 + .price').innerText = `$${data.next_hour_price}`;
+            });
+        }
+
+        // Fetch the latest prediction every minute
+        setInterval(fetchLatestPrediction, 60000);
+    </script>
+</body>
+</html>
