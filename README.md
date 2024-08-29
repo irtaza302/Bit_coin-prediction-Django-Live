@@ -79,28 +79,7 @@ This project is a Django-based web application that fetches the current Bitcoin 
 
 ## Project Structure
 live-bitcoin-prediction/
-├── live_prediction/
-│   ├── migrations/
-│   ├── templates/
-│   │   └── live_prediction/
-│   │       └── index.html
-│   ├── __init__.py
-│   ├── admin.py
-│   ├── apps.py
-│   ├── models.py
-│   ├── tasks.py
-│   ├── tests.py
-│   ├── urls.py
-│   └── views.py
-├── bitcoin_prediction/
-│   ├── __init__.py
-│   ├── asgi.py
-│   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
-├── manage.py
-├── requirements.txt
-└── README.md
+live-bitcoin-prediction/ ├── live_prediction/ │ ├── migrations/ │ ├── templates/ │ │ └── live_prediction/ │ │ └── index.html │ ├── init.py │ ├── admin.py │ ├── apps.py │ ├── models.py │ ├── tasks.py │ ├── tests.py │ ├── urls.py │ └── views.py ├── bitcoin_prediction/ │ ├── init.py │ ├── asgi.py │ ├── settings.py │ ├── urls.py │ └── wsgi.py ├── manage.py ├── requirements.txt └── README.md
 
 ## Key Files
 
