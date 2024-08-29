@@ -78,6 +78,30 @@ This project is a Django-based web application that fetches the current Bitcoin 
 8. **Open your web browser and navigate to `http://127.0.0.1:8000/` to see the application in action.**
 
 ## Project Structure
+live-bitcoin-prediction/
+├── live_prediction/
+│   ├── migrations/
+│   ├── templates/
+│   │   └── live_prediction/
+│   │       └── index.html
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── models.py
+│   ├── tasks.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+├── bitcoin_prediction/
+│   ├── __init__.py
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── manage.py
+├── requirements.txt
+└── README.md
+
 ## Key Files
 
 - **`live_prediction/tasks.py`**: Contains the background task that fetches the current Bitcoin price and predicts the next minute's price.
