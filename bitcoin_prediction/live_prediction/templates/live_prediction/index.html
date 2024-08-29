@@ -13,6 +13,7 @@
             align-items: center;
             flex-direction: column;
             height: 100vh;
+            margin: 0;
         }
         .container {
             background-color: #fff;
@@ -37,8 +38,8 @@
     <div class="container">
         <h1>Live Bitcoin Price</h1>
         <p class="price">${{ bitcoin_price }}</p>
-        <h2>Predicted Price for Next Hour</h2>
-        <p class="price">${{ next_hour_price }}</p>
+        <h2>Predicted Price for Next Minute</h2>
+        <p class="price">${{ next_minute_price }}</p>
     </div>
     <div id="chart-container">
         <canvas id="bitcoinChart"></canvas>
@@ -64,7 +65,7 @@
                         display: true,
                         title: {
                             display: true,
-                            text: 'Month'
+                            text: 'Minute'
                         }
                     },
                     y: {
@@ -81,19 +82,33 @@
         // Function to update the chart with new data
         function updateChart(newPrice) {
             const currentDate = new Date();
-            const currentMonth = currentDate.toLocaleString('default', { month: 'short' });
-            bitcoinChart.data.labels.push(currentMonth);
+            const currentMinute = currentDate.getMinutes();
+            bitcoinChart.data.labels.push(currentMinute);
             bitcoinChart.data.datasets[0].data.push(newPrice);
             bitcoinChart.update();
         }
 
         // Fetch the latest prediction and update the UI
         function fetchLatestPrediction() {
-            fetch('/').then(response => response.json()).then(data => {
+            fetch('/', {
+                headers: {
+                    'x-requested-with': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
                 const newPrice = parseFloat(data.bitcoin_price.replace(/,/g, ''));
                 updateChart(newPrice);
-                document.querySelector('.price').innerText = `$${newPrice}`;
-                document.querySelector('.container h2 + .price').innerText = `$${data.next_hour_price}`;
+                document.querySelector('.container .price').innerText = `$${newPrice}`;
+                document.querySelector('.container h2 + .price').innerText = `$${data.next_minute_price}`;
+            })
+            .catch(error => {
+                console.error('Error fetching latest prediction:', error);
             });
         }
 
