@@ -33,7 +33,7 @@ This project is a Django-based web application that fetches the current Bitcoin 
 1. **Clone the repository:**
 
     ```bash
-    git clone https://github.com/yourusername/live-bitcoin-prediction.git
+    git clone https://github.com/irtaza302/live-bitcoin-prediction.git
     cd live-bitcoin-prediction
     ```
 
