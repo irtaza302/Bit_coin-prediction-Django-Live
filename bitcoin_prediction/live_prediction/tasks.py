@@ -14,6 +14,24 @@ logger = logging.getLogger(__name__)
 
 @background(schedule=60)  # Run every minute
 def fetch_and_predict():
+    """Fetches the current Bitcoin price, predicts the next minute's price using a linear regression model, and saves the prediction to the database.
+    
+    Args:
+        None
+    
+    Returns:
+        None
+    
+    Raises:
+        requests.RequestException: If there's an error fetching the Bitcoin price.
+        ValueError: If there's an error parsing the Bitcoin price data.
+        KeyError: If the expected keys are not found in the Bitcoin price data.
+    
+    Note:
+        This method uses static historical data for demonstration purposes.
+        The prediction is based on a simple linear regression model.
+        The current price and predicted price are saved to the database using the Prediction model.
+    """
     try:
         # Fetch the current Bitcoin price
         response = requests.get('https://api.coindesk.com/v1/bpi/currentprice/BTC.json')
