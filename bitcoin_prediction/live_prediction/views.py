@@ -10,6 +10,17 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def index(request):
+    """Handles the index page request for live Bitcoin price prediction.
+    
+    Args:
+        request (HttpRequest): The HTTP request object.
+    
+    Returns:
+        HttpResponse: Rendered HTML page with Bitcoin price data or JsonResponse with price data for AJAX requests.
+    
+    Raises:
+        None explicitly, but may raise database-related exceptions.
+    """
     try:
         # Fetch the latest prediction from the database
         latest_prediction = Prediction.objects.latest('timestamp')
